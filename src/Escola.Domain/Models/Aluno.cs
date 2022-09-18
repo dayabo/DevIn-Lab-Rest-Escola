@@ -9,12 +9,14 @@ namespace Escola.Domain.Models
 {
     public class Aluno
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid Id { get; internal  set; } = Guid.NewGuid();
         public int Matricula { get; set; }
         public string Nome { get; set; }
         public string Sobrenome { get; set; }
         public string Email { get; set; }
         public DateTime DataNascimento { get; set; }
+       
+        public IList<Boletim> Boletins { get; set; }
 
         public Aluno(AlunoDTO aluno)
         {

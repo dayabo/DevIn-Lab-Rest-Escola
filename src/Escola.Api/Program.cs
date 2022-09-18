@@ -13,6 +13,13 @@ builder.Services.AddDbContext<EscolaDBContexto>();
 RepositoryIoC.RegisterServices(builder.Services);
 
 builder.Services.AddScoped<IAlunoServico,AlunoServico>();
+builder.Services.AddScoped<INotasMateriaServico, NotaMateriaServico>();
+builder.Services.AddScoped<IMateriaServico, MateriaServico>();
+builder.Services.AddScoped<IBoletimServico, BoletimServico>();
+
+builder.Services.AddScoped<IMateriaRepositorio, MateriaRepositorio>();
+builder.Services.AddScoped<IBoletimRepositorio, BoletimRepositorio>();
+builder.Services.AddScoped<INotasMateriasRepositorio, NotasMateriaRepositorio>();
 
 builder.Services.AddMemoryCache();
 builder.Services.AddScoped(typeof(CacheService<>));

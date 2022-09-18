@@ -4,6 +4,7 @@ using Escola.Infra.DataBase;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Escola.Infra.Migrations
 {
     [DbContext(typeof(EscolaDBContexto))]
-    partial class EscolaDBContextoModelSnapshot : ModelSnapshot
+    [Migration("20220916130546_BoletimMateria")]
+    partial class BoletimMateria
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,19 +75,16 @@ namespace Escola.Infra.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Faltas")
-                        .HasColumnType("int")
-                        .HasColumnName("Faltas");
+                        .HasColumnType("int");
 
                     b.Property<string>("Semestre")
-                        .HasMaxLength(80)
-                        .HasColumnType("varchar(80)")
-                        .HasColumnName("Semestre");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AlunoId");
 
-                    b.ToTable("Boletim", (string)null);
+                    b.ToTable("Boletim");
                 });
 
             modelBuilder.Entity("Escola.Domain.Models.Materia", b =>
@@ -97,18 +96,14 @@ namespace Escola.Infra.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Nome")
-                        .HasMaxLength(80)
-                        .HasColumnType("varchar(80)")
-                        .HasColumnName("Nome");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Professor")
-                        .HasMaxLength(150)
-                        .HasColumnType("varchar(150)")
-                        .HasColumnName("Professor");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Materia", (string)null);
+                    b.ToTable("Materia");
                 });
 
             modelBuilder.Entity("Escola.Domain.Models.NotasMateria", b =>
@@ -125,9 +120,8 @@ namespace Escola.Infra.Migrations
                     b.Property<int>("MateriaId")
                         .HasColumnType("int");
 
-                    b.Property<double>("Nota")
-                        .HasColumnType("float")
-                        .HasColumnName("Nota");
+                    b.Property<float>("Nota")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
@@ -135,7 +129,7 @@ namespace Escola.Infra.Migrations
 
                     b.HasIndex("MateriaId");
 
-                    b.ToTable("Notas Materias", (string)null);
+                    b.ToTable("NotasMateria");
                 });
 
             modelBuilder.Entity("Escola.Domain.Models.Boletim", b =>

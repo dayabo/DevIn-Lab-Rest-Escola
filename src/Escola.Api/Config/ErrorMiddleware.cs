@@ -50,7 +50,13 @@ namespace Escola.Api.Config
                 status = HttpStatusCode.NotAcceptable;
                 message = ex.Message;
             }
-            else{
+            else if (ex is NaoExisteException)
+            {
+                status = HttpStatusCode.NotAcceptable;
+                message = ex.Message;
+            }
+            else
+            {
                 status = HttpStatusCode.InternalServerError;
                 message = "Ocorreu um erro favor contactar a TI";
 
