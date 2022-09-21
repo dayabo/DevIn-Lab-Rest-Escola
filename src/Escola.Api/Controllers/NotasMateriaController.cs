@@ -6,9 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Escola.Api.Controllers
 {
-
-    [Route("api/[controller]")]
+ 
     [ApiController]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/notasMateria")]
     public class NotasMateriaController : ControllerBase
     {
         private readonly INotasMateriaServico _notasMateriaServico;
@@ -18,9 +19,10 @@ namespace Escola.Api.Controllers
             _notasMateriaServico = notasMateriaServico;
         }
 
-        // GET: api/<NotasMateriaController>
-       
-        
+
+
+
+        [MapToApiVersion("1.0")]
         [HttpGet("/api/alunos/{idAluno}/boletins/{idBoletim}/NotasMateria")]
         public IActionResult ObterPoId([FromRoute] Guid idAluno,[FromRoute] int idBoletim)
         {
@@ -28,7 +30,8 @@ namespace Escola.Api.Controllers
 
         }
 
-        // GET api/<NotasMateriaController>/5
+
+        [MapToApiVersion("1.0")]
         [HttpGet("{id}")]
         public IActionResult ObterPorId([FromRoute] int id)
         {
@@ -36,7 +39,8 @@ namespace Escola.Api.Controllers
         }
 
 
-        // POST api/<NotasMateriaController>
+
+        [MapToApiVersion("1.0")]
         [HttpPost]
         public IActionResult Post([FromBody] NotaDTO nota)
         {
@@ -46,7 +50,8 @@ namespace Escola.Api.Controllers
 
         }
 
-        // PUT api/<NotasMateriaController>/5
+
+        [MapToApiVersion("1.0")]
         [HttpPut("{id}")]
         public IActionResult Put([FromRoute] int id, [FromBody] NotaDTO nota)
         {
@@ -54,7 +59,8 @@ namespace Escola.Api.Controllers
             return Ok();
         }
 
-        // DELETE api/<NotasMateriaController>/5
+
+        [MapToApiVersion("1.0")]
         [HttpDelete("{id}")]
         public IActionResult Deletar([FromRoute] int id)
         {

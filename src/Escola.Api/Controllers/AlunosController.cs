@@ -15,7 +15,8 @@ using Microsoft.AspNetCore.JsonPatch;
 namespace Escola.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/alunos")]
     public class AlunosController : ControllerBase
     {
         private readonly IAlunoServico _alunoServico;
@@ -27,6 +28,8 @@ namespace Escola.Api.Controllers
             _alunoServico = alunoServico;
            
         }
+
+        [MapToApiVersion("1.0")]
         [HttpGet]
         public IActionResult ObterTodos(int skip = 0, int take = 5){
             try{
@@ -57,6 +60,8 @@ namespace Escola.Api.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
+
+        [MapToApiVersion("1.0")]
         [HttpGet("{id}")]
         public IActionResult ObterPorId(Guid id){
             var cookie = Request.Cookies["TesteCookie"];
@@ -69,6 +74,8 @@ namespace Escola.Api.Controllers
             }
             return Ok(aluno);
         }
+
+        [MapToApiVersion("1.0")]
         [HttpPost]
         public IActionResult Inserir (AlunoDTO aluno){
             _alunoServico.Inserir(aluno);
@@ -85,6 +92,7 @@ namespace Escola.Api.Controllers
            
         }
 
+        [MapToApiVersion("1.0")]
         [HttpPatch("{id}")]
         public IActionResult Patch(Guid id, 
                             [FromBody] JsonPatchDocument<AlunoDTO> alunoPatch)
@@ -102,7 +110,7 @@ namespace Escola.Api.Controllers
             return Ok();
         }
 
-
+        [MapToApiVersion("1.0")]
         [HttpDelete("{id}")]
         public IActionResult Deletar(Guid id){
                 _alunoServico.Excluir(id);
@@ -114,22 +122,22 @@ namespace Escola.Api.Controllers
                 new HateoasDTO(){
                     Rel = "self",
                     Type = "GET", 
-                    URI = $"{baseURI}/api/alunos/{aluno.Id}" 
+                    URI = $"{baseURI}/api/v1/alunos/{aluno.Id}" 
                 }, 
                 new HateoasDTO(){
                     Rel = "aluno",
                     Type = "PUT", 
-                    URI = $"{baseURI}/api/alunos/{aluno.Id}" 
+                    URI = $"{baseURI}/api/v1/alunos/{aluno.Id}" 
                 },
                 new HateoasDTO(){
                     Rel = "aluno",
                     Type = "DELETE", 
-                    URI = $"{baseURI}/api/alunos/{aluno.Id}" 
+                    URI = $"{baseURI}/api/v1/alunos/{aluno.Id}" 
                 }, 
                 new HateoasDTO(){
                     Rel = "boletims",
                     Type = "GET", 
-                    URI = $"{baseURI}/api/alunos/{aluno.Id}/boletims" 
+                    URI = $"{baseURI}/api/v1/alunos/{aluno.Id}/boletims" 
                 }
             };
 
@@ -138,7 +146,7 @@ namespace Escola.Api.Controllers
                         new HateoasDTO(){
                         Rel = "MatricularAluno",
                         Type = "POST", 
-                        URI = $"{baseURI}/api/alunos/{aluno.Id}/Matricular" 
+                        URI = $"{baseURI}/api/v1/alunos/{aluno.Id}/Matricular" 
                     }
                 );
             }
@@ -149,13 +157,13 @@ namespace Escola.Api.Controllers
                 new HateoasDTO(){
                     Rel = "self",
                     Type = "GET", 
-                    URI = $"{baseURI}/api/alunos?skip={skip}&take={take}" 
+                    URI = $"{baseURI}/api/v1/alunos?skip={skip}&take={take}" 
                 }, 
           
                 new HateoasDTO(){
                     Rel = "aluno",
                     Type = "POST", 
-                    URI = $"{baseURI}/api/alunos/" 
+                    URI = $"{baseURI}/api/v1/alunos/" 
                 }
             };
             var razao = take - skip ;
@@ -167,7 +175,7 @@ namespace Escola.Api.Controllers
                 hateoas.Add(new HateoasDTO(){
                     Rel = "Prev",
                     Type = "GET", 
-                    URI = $"{baseURI}/api/alunos?skip={newSkip}&take={take-razao}" 
+                    URI = $"{baseURI}/api/v1/alunos?skip={newSkip}&take={take-razao}" 
                 });
             }
 
@@ -176,7 +184,7 @@ namespace Escola.Api.Controllers
                 hateoas.Add(new HateoasDTO(){
                     Rel = "Next",
                     Type = "GET", 
-                    URI = $"{baseURI}/api/alunos?skip={skip+razao}&take={take+razao}" 
+                    URI = $"{baseURI}/api/v1/alunos?skip={skip+razao}&take={take+razao}" 
                 });    
             }
 

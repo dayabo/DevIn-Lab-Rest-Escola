@@ -7,19 +7,21 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Escola.Api.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    public class MateriaController : ControllerBase
+    [ApiVersion("2.0")]
+    [Route("api/v{version:apiVersion}/materia")]
+   
+    public class MateriaV2Controller : ControllerBase
     {
 
         private readonly IMateriaServico _materiaServico;
 
-        public MateriaController(IMateriaServico materiaServico)
+        public MateriaV2Controller(IMateriaServico materiaServico)
         {
             _materiaServico = materiaServico;
         }
 
-      
+        [MapToApiVersion("2.0")]
         [HttpGet]
         public IActionResult ObterTodos([FromQuery] string nome, int skip, int take)
         {
@@ -28,41 +30,41 @@ namespace Escola.Api.Controllers
 
             if (!string.IsNullOrEmpty(nome))
             {
-                return Ok(_materiaServico.ObterPorNome(nome));
+                return Ok(new MateriaV2DTO(_materiaServico.ObterPorNome(nome)));
             }
 
             Response.Headers.Add("x-Paginacao-TotalDeRegistros", totalRegistros.ToString());
 
-            return Ok(_materiaServico.ObterTodos(paginacao));
+            return Ok(_materiaServico.ObterTodos(paginacao).Select(materiaDTO => new MateriaV2DTO(materiaDTO)));
         }
-        
+
+        [MapToApiVersion("2.0")]
         [HttpGet("{id}")]
        
         public IActionResult ObterPorId([FromRoute] int id)
         { 
-            return Ok(_materiaServico.ObterPorId(id));
+            return Ok(new MateriaV2DTO(_materiaServico.ObterPorId(id)));
         }
 
-
-        // POST api/<Materia>
+        [MapToApiVersion("2.0")]
         [HttpPost]
-        public IActionResult Post([FromBody] MateriaDTO materia)
+        public IActionResult Post([FromBody] MateriaV2DTO materia)
         {
-            _materiaServico.Inserir(materia);
+            _materiaServico.Inserir(new MateriaDTO(materia));
          
             return StatusCode(StatusCodes.Status201Created);
 
         }
 
-        
+        [MapToApiVersion("2.0")]
         [HttpPut("{id}")]
-        public IActionResult Put([FromRoute] int id, [FromBody] MateriaDTO materia)
+        public IActionResult Put([FromRoute] int id, [FromBody] MateriaV2DTO materia)
         {
-            _materiaServico.Atualizar(id,materia);
+            _materiaServico.Atualizar(id,(new MateriaDTO( materia)));
             return Ok();
         }
 
-      
+        [MapToApiVersion("2.0")]
         [HttpDelete("{id}")]
         public IActionResult Deletar([FromRoute] int id)
         {

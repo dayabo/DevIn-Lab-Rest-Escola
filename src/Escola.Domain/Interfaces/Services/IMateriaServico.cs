@@ -12,7 +12,7 @@ namespace Escola.Domain.Interfaces.Services
     {
         IList<MateriaDTO> ObterTodos(Paginacao paginacao);
         MateriaDTO ObterPorId(int id);
-        IList<MateriaDTO> ObterPorNome(string nome);
+        MateriaDTO ObterPorNome(string nome);
         void Inserir(MateriaDTO materia);
         void Excluir(int id);
         void Atualizar(int id, MateriaDTO materia);

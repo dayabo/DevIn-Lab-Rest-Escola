@@ -9,9 +9,9 @@ namespace Escola.Infra.DataBase.Repositories
     public class BaseRepositorio<TEntity, Tkey> where TEntity : class
     {
         protected readonly EscolaDBContexto _contexto;
-        public BaseRepositorio(EscolaDBContexto contexo)
+        public BaseRepositorio(EscolaDBContexto contexto)
         {
-            _contexto = contexo;
+            _contexto = contexto;
         }
 
         public virtual void Inserir (TEntity entity){

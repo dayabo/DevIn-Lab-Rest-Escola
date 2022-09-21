@@ -13,7 +13,9 @@ using AutoMapper;
 namespace Escola.Api.Controllers
 {
     [ApiController]
-    [Route("api/v2/alunos")]
+    [ApiVersion("2.0")]
+    [Route("api/v{version:apiVersion}/alunos")]
+   
     public class AlunosV2Controller : ControllerBase
     {   
         private readonly IMapper _mapper;
@@ -23,6 +25,8 @@ namespace Escola.Api.Controllers
             _mapper = mapper;
             _alunoServico = alunoServico;
         }
+
+        [MapToApiVersion("2.0")]
         [HttpGet]
         public IActionResult ObterTodos(int skip = 0, int take = 5){
                 var paginacao = new Paginacao(take,skip);
@@ -33,6 +37,8 @@ namespace Escola.Api.Controllers
 
                 return Ok();//_alunoServico.ObterTodos(paginacao).Select(x => new AlunoV2DTO(x)));
         }
+
+        [MapToApiVersion("2.0")]
         [HttpGet("{id}")]
         public IActionResult ObterPorId(Guid id){
             try{
@@ -42,12 +48,16 @@ namespace Escola.Api.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
+
+        [MapToApiVersion("2.0")]
         [HttpPost]
         public IActionResult Inserir (AlunoV2DTO aluno){
             _alunoServico.Inserir(_mapper.Map<AlunoDTO>(aluno));
 
             return StatusCode(StatusCodes.Status201Created);
         }
+
+        [MapToApiVersion("2.0")]
         [HttpPut("{id}")]
         public IActionResult Atualizar(Guid id, [FromBody] AlunoV2DTO aluno){
             try{
@@ -59,6 +69,8 @@ namespace Escola.Api.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
+
+        [MapToApiVersion("2.0")]
         [HttpDelete("{id}")]
         public IActionResult Deletar(Guid id){
             try{

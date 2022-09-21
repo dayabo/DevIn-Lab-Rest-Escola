@@ -5,6 +5,8 @@ using Escola.Domain.Services;
 using Escola.Infra.DataBase;
 using Escola.Api.Config;
 using Escola.Api.Config.IoC;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,23 +26,46 @@ builder.Services.AddScoped<INotasMateriasRepositorio, NotasMateriaRepositorio>()
 builder.Services.AddMemoryCache();
 builder.Services.AddScoped(typeof(CacheService<>));
 
+builder.Services.AddControllers();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+builder.Services.ConfigureOptions<ConfigureSwaggerGenOptions>();
+builder.Services.AddApiVersioning(setup =>
+{
+    setup.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+    setup.AssumeDefaultVersionWhenUnspecified = true;
+    setup.ReportApiVersions = true;
+});
+
+
+builder.Services.AddVersionedApiExplorer(p =>
+{
+    p.GroupNameFormat = "'v'VVV";
+    p.SubstituteApiVersionInUrl = true;
+});
+
 builder.Services.AddSingleton(AutoMapperConfig.Configure());
 
-builder.Services.AddControllers()
-                .AddNewtonsoftJson();
-builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+
 app.MapControllers();
 app.UseMiddleware<ErrorMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    
     app.UseSwaggerUI(options =>
     {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+        foreach(var description in provider.ApiVersionDescriptions)
+        {
+            options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+        }
+      
         options.RoutePrefix = string.Empty;
     });
 }

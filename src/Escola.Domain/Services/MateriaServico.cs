@@ -41,8 +41,8 @@ namespace Escola.Domain.Services
 
         public void Inserir(MateriaDTO materia)
         {
-           var jaExiste = _materiaRepositorio.ObterPorNome(materia.Nome);
-            if (jaExiste.Count > 0)
+
+            if (_materiaRepositorio.ExisteMateria(materia.Nome))
                 throw new DuplicadoException("Matéria já existe");
 
 
@@ -52,12 +52,12 @@ namespace Escola.Domain.Services
 
         public MateriaDTO ObterPorId(int id)
         {
-           return new MateriaDTO( _materiaRepositorio.ObterPorId(id));
+           return new MateriaDTO(_materiaRepositorio.ObterPorId(id));
         }
 
-        public IList<MateriaDTO> ObterPorNome(string nome)
+        public MateriaDTO ObterPorNome(string nome)
         {
-            return _materiaRepositorio.ObterPorNome(nome).Select(materia => new MateriaDTO(materia)).ToList();
+            return new MateriaDTO(_materiaRepositorio.ObterPorNome(nome));
         }
 
         public IList<MateriaDTO> ObterTodos(Paginacao paginacao)

@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Escola.Api.Controllers
 {
-
-    [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/boletim")]
     public class BoletimController : ControllerBase
     {
         private readonly IBoletimServico _boletimServico;
@@ -18,7 +18,7 @@ namespace Escola.Api.Controllers
             _boletimServico = boletimServico;
         }
 
-        
+        [MapToApiVersion("1.0")]
         [HttpGet("/api/alunos/{{idAluno}}/boletins")]
         public IActionResult ObterPoIdAluno([FromRoute] Guid idAluno)
         {
@@ -26,14 +26,14 @@ namespace Escola.Api.Controllers
            
         }
 
-        
+        [MapToApiVersion("1.0")]
         [HttpGet("{id}")]
         public IActionResult ObterPorId([FromRoute] int id)
         {
             return Ok(_boletimServico.ObterPorId(id));
         }
 
-       
+        [MapToApiVersion("1.0")]
         [HttpPost]
         public IActionResult Post([FromBody] BoletimDTO boletim)
         {
@@ -42,7 +42,7 @@ namespace Escola.Api.Controllers
             return StatusCode(StatusCodes.Status201Created);
         }
 
-
+        [MapToApiVersion("1.0")]
         [HttpPut("{id}")]
         public IActionResult Put([FromRoute] int id, [FromBody] BoletimDTO boletim)
         {
@@ -50,7 +50,7 @@ namespace Escola.Api.Controllers
             return Ok();
         }
 
-        //observacao
+        [MapToApiVersion("1.0")]
         [HttpDelete("{id}")]
         public IActionResult Deletar([FromRoute] int id)
         {

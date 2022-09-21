@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Escola.Domain.DTO
 {
-    public class MateriaDTO
+    public class MateriaDTO: BaseHateoasDTO
     {
         public int Id { get; internal set; }
 
@@ -15,15 +15,24 @@ namespace Escola.Domain.DTO
 
         public string Professor { get; set; }
 
-        public MateriaDTO()
-        {
+        public IList<HateoasDTO> Links { get; set; }
 
-        }
+        public MateriaDTO()
+        {}
+
         public MateriaDTO (Materia materia)
         {
             Id = materia.Id;
             Nome = materia.Nome;
             Professor = materia.Professor;
-        }   
+        }
+        
+        public MateriaDTO(MateriaV2DTO materia)
+        {
+            Id = materia.Id;
+            Nome = materia.Disciplina;
+            Professor = materia.Professor;
+        }
+       
     }
 }

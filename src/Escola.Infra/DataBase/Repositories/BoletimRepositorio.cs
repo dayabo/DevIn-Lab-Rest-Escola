@@ -8,42 +8,17 @@ using System.Threading.Tasks;
 
 namespace Escola.Infra.DataBase.Repositories
 {
-    public class BoletimRepositorio : IBoletimRepositorio
+    public class BoletimRepositorio : BaseRepositorio<Boletim, int>, IBoletimRepositorio
     {
-        private readonly EscolaDBContexto _dBContexto;
-        public BoletimRepositorio(EscolaDBContexto dBContexto)
+       
+        public BoletimRepositorio(EscolaDBContexto contexto) : base(contexto)
         {
-            _dBContexto = dBContexto;
         }
-        public void Atualizar(Boletim boletim)
-        {
-            _dBContexto.Boletins.Update(boletim);
-            _dBContexto.SaveChanges();
-        }
-
-        public void Excluir(Boletim boletim)
-        {
-            _dBContexto.Boletins.Remove(boletim);
-            _dBContexto.SaveChanges();
-        }
-        
-
-        public void Inserir(Boletim boletim)
-        {
-            _dBContexto.Boletins.Add(boletim);
-            _dBContexto.SaveChanges();
-        }
-
-        public Boletim ObterPorId(int id)
-        {
-            return _dBContexto.Boletins.Find(id);
-        }
-
+       
         
         public IList<Boletim> ObterPorIdAluno(Guid id)
         {
-            return _dBContexto.Boletins.Where(boletim => boletim.AlunoId == id).ToList();
-
+            return _contexto.Boletins.Where(boletim => boletim.AlunoId == id).ToList();
         }
     }
 }

@@ -22,6 +22,7 @@ namespace Escola.Domain.Models
             Professor = materia.Professor;
         }
 
+
         public void Update(MateriaDTO materia)
         {
             Nome = materia.Nome;
